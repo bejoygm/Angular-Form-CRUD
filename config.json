@@ -1,5 +1,11 @@
 {
     "app_directory": "/home/be.mathew/Documents/Fantestico-Client",
     "pages_directory": "/src/app/pages/",
-    "module_name": "business-vertical"
+    "module_name": "business-vertical",
+
+    "_comment": "below value will be used to find array name of routes",
+    "page_route_var": "const routes: Routes = [{",
+    
+    "_comment": "below value will be used to append new value to routes array",
+    "page_route_end_identifier": "}]"
 }

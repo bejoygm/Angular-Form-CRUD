@@ -3,6 +3,7 @@ import json
 import subprocess
 import pathlib
 import string
+import shutil
 
 config = json.load(open('config.json'))
 PAGES_DIRECTORY = config['app_directory'] + config["pages_directory"]
@@ -30,8 +31,32 @@ def make_file(template_file, output_file_name, data):
         output.write(src.safe_substitute(data))
     filein.close()
 
+def insert_to_file(file, decision_func):
+    temp = open('temp', 'w+')
+    with open(file, 'r') as f:
+        decision_func(temp, f)
+    temp.close()
+    shutil.move('temp', file)
+
+def add_to_page_routes(temp, f):
+    var_found = False
+    for line in f:
+        if line.strip("\n") == config['page_route_var']:
+            var_found = True
+
+        if var_found:
+            if config['page_route_end_identifier'] in line.strip("\n"):
+                # switch back to false            
+                var_found = False
+                line = line.replace('}', f'''}}, {{
+    path: '{MODULE_NAME}',
+    loadChildren: './{MODULE_NAME}/{MODULE_NAME}.module#{ANGULAR_MODULE_NAME}Module',
+  }}''')
+        temp.write(line)
+
 # change directory to Angular Pages Folder
 with cd(PAGES_DIRECTORY):
+    insert_to_file('pages-routing.module.ts', add_to_page_routes)
     # create folder structure
     pathlib.Path(MODULE_DIRECTORY).mkdir(parents=True, exist_ok=True)
     pathlib.Path(MODULE_DIRECTORY + '/create').mkdir(parents=True, exist_ok=True)
