@@ -27,7 +27,7 @@ def make_file(template_file, output_file_name, data):
     filein = open(SCRIPT_DIRECTORY + '/' + template_file)
     src = string.Template(filein.read())
     with open(output_file_name, 'w+') as output:
-        output.write(src.substitute(data))
+        output.write(src.safe_substitute(data))
     filein.close()
 
 # change directory to Angular Pages Folder
@@ -37,22 +37,19 @@ with cd(PAGES_DIRECTORY):
     pathlib.Path(MODULE_DIRECTORY + '/create').mkdir(parents=True, exist_ok=True)
     pathlib.Path(MODULE_DIRECTORY + '/edit').mkdir(parents=True, exist_ok=True)
     
-    # create files in module
+    # create module level files
     with cd(MODULE_DIRECTORY):
         data = {'module_name': MODULE_NAME, 'angular_module_name': ANGULAR_MODULE_NAME}
         make_file('module-template.ts', f'{MODULE_NAME}.module.ts', data)
         make_file('module-component-template.ts', f'{MODULE_NAME}.component.ts', data)
         make_file('routing-template.ts', f'{MODULE_NAME}-routing.module.ts', data)
 
-    with cd(MODULE_DIRECTORY + '/create'):
-        open(f'{MODULE_NAME}-create.component.html', 'a+')
-        open(f'{MODULE_NAME}-create.component.scss', 'a+')
-        open(f'{MODULE_NAME}-create.component.ts', 'a+')
-
-    with cd(MODULE_DIRECTORY + '/edit'):
-        open(f'{MODULE_NAME}-edit.component.html', 'a+')
-        open(f'{MODULE_NAME}-edit.component.scss', 'a+')
-        open(f'{MODULE_NAME}-edit.component.ts', 'a+')
+    # create actions (CRUD)
+    for action in ['create', 'edit']:
+        with cd(MODULE_DIRECTORY + f'/{action}'):
+            make_file(f'{action}-template.html', f'{MODULE_NAME}-{action}.component.html', data)
+            make_file(f'{action}-component-template.ts', f'{MODULE_NAME}-{action}.component.ts', data)
+  
 
 
 

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-12">
+    <form class="form-inline">
+      <div class="input-group full-width">
+        <h5 style="margin-right: 20px; margin-top: 12px;">List of Organizations</h5>
+        <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search Organization...">
+      </div>
+      <button (click)="onCreate()" type="submit" class="btn create-btn mb"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create Organization</button>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <ng2-smart-table class="alpha" (messageEvent)="receiveMessage($event)" [settings]="settings" [source]="source" (edit)="onEdit($event)" (custom)="onCustom($event)" (delete)="onDeleteConfirm($event)">
+        </ng2-smart-table>
+  </div>
+</div>
