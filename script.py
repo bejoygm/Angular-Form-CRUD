@@ -41,8 +41,8 @@ with cd(PAGES_DIRECTORY):
     with cd(MODULE_DIRECTORY):
         data = {'module_name': MODULE_NAME, 'angular_module_name': ANGULAR_MODULE_NAME}
         make_file('module-template.ts', f'{MODULE_NAME}.module.ts', data)
-        open(f'{MODULE_NAME}.component.ts', 'a+')
-        open(f'{MODULE_NAME}-routing.module.ts', 'a+')
+        make_file('module-component-template.ts', f'{MODULE_NAME}.component.ts', data)
+        make_file('routing-template.ts', f'{MODULE_NAME}-routing.module.ts', data)
 
     with cd(MODULE_DIRECTORY + '/create'):
         open(f'{MODULE_NAME}-create.component.html', 'a+')
