@@ -1,7 +1,6 @@
 {
     "app_directory": "/home/be.mathew/Documents/Fantestico-Client",
     "pages_directory": "/src/app/pages/",
-    "module_name": "business-vertical",
 
     "_comment": "below value will be used to find array name of routes",
     "page_route_var": "const routes: Routes = [{",
@@ -9,5 +8,27 @@
 
     "_comment": "below value will be used to append new value to sidebar menu array",
     "page_menu_var": "export const MENU_ITEMS: NbMenuItem[] = [",
-    "page_menu_end_identifier": "];"
+    "page_menu_end_identifier": "];",
+
+    
+    "module_name": "business-vertical",
+    "api_url": "http://ec2-13-127-27-144.ap-south-1.compute.amazonaws.com:8080/",
+    "create_api": "manageorg/getorgbyname?org_Name",
+    "get_api": "manageorg/getorgbyname?org_Name",
+    "update_api": "manageorg/getorgbyname?org_Name",
+    "delete_api": "manageorg/getorgbyname?org_Name",
+
+    "table_columns": {
+      "org_Code": {
+        "title": "Business Vertical Code"
+      },
+      "org_Name": {
+        "title": "Business Vertical Name"
+      },
+      "status": {
+        "title": "Business Vertical Parent Name"
+      }
+    }
+
 }
+

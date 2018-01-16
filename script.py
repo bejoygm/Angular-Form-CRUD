@@ -10,8 +10,10 @@ config = json.load(open('config.json'))
 PAGES_DIRECTORY = config['app_directory'] + config["pages_directory"]
 MODULE_NAME = config['module_name']
 ANGULAR_MODULE_NAME = "".join(i.title() for i in MODULE_NAME.split("-"))
+MODLUE_DISPLAY_NAME = " ".join(re.findall('[A-Z][^A-Z]*', ANGULAR_MODULE_NAME))
 MODULE_DIRECTORY = PAGES_DIRECTORY + MODULE_NAME
 SCRIPT_DIRECTORY = os.getcwd()
+
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -57,7 +59,6 @@ def add_to_page_routes(temp, f):
 
 def add_to_page_menu(temp, f):
     var_found = False
-    menu_name = " ".join(re.findall('[A-Z][^A-Z]*', ANGULAR_MODULE_NAME))
     for line in f:
         if line.strip("\n") == config['page_menu_var']:
             var_found = True
@@ -67,7 +68,7 @@ def add_to_page_menu(temp, f):
                 # switch back to false            
                 var_found = False
                 line = line.replace(']', f'''  {{
-    title: '{menu_name}',
+    title: '{MODLUE_DISPLAY_NAME}',
     icon: 'nb-compose',
     link: '/pages/{MODULE_NAME}/view',
     home: true,
@@ -77,8 +78,8 @@ def add_to_page_menu(temp, f):
 
 # change directory to Angular Pages Folder
 with cd(PAGES_DIRECTORY):
-    insert_to_file('pages-routing.module.ts', add_to_page_routes)
-    insert_to_file('pages-menu.ts', add_to_page_menu)
+    # insert_to_file('pages-routing.module.ts', add_to_page_routes)
+    # insert_to_file('pages-menu.ts', add_to_page_menu)
     # create folder structure
     pathlib.Path(MODULE_DIRECTORY).mkdir(parents=True, exist_ok=True)
     pathlib.Path(MODULE_DIRECTORY + '/create').mkdir(parents=True, exist_ok=True)
@@ -86,7 +87,17 @@ with cd(PAGES_DIRECTORY):
     
     # create module level files
     with cd(MODULE_DIRECTORY):
-        data = {'module_name': MODULE_NAME, 'angular_module_name': ANGULAR_MODULE_NAME}
+        data = {
+            'module_display_name': MODLUE_DISPLAY_NAME,
+            'module_name': MODULE_NAME, 
+            'angular_module_name': ANGULAR_MODULE_NAME,
+            "api_url": config["api_url"],
+            "create_api": config["create_api"],
+            "get_api": config["get_api"],
+            "update_api": config["update_api"],
+            "delete_api": config["delete_api"],
+            "table_columns": config["table_columns"]
+        }
         make_file('module-template.ts', f'{MODULE_NAME}.module.ts', data)
         make_file('module-component-template.ts', f'{MODULE_NAME}.component.ts', data)
         make_file('routing-template.ts', f'{MODULE_NAME}-routing.module.ts', data)

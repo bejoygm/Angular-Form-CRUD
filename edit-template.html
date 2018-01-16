@@ -2,10 +2,10 @@
   <div class="col-md-12">
     <form class="form-inline">
       <div class="input-group full-width">
-        <h5 style="margin-right: 20px; margin-top: 12px;">List of Organizations</h5>
-        <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search Organization...">
+        <h5 style="margin-right: 20px; margin-top: 12px;">List of ${module_display_name}</h5>
+        <input type="text" #search (keyup)="onSearch(search.value)" class="form-control" placeholder="Search ${module_display_name}...">
       </div>
-      <button (click)="onCreate()" type="submit" class="btn create-btn mb"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create Organization</button>
+      <button (click)="onCreate()" type="submit" class="btn create-btn mb"><i class="fa fa-plus"></i>&nbsp;&nbsp;Create ${module_display_name}</button>
     </form>
   </div>
 </div>
