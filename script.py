@@ -4,6 +4,7 @@ import subprocess
 import pathlib
 import string
 import shutil
+import re
 
 config = json.load(open('config.json'))
 PAGES_DIRECTORY = config['app_directory'] + config["pages_directory"]
@@ -54,9 +55,30 @@ def add_to_page_routes(temp, f):
   }}''')
         temp.write(line)
 
+def add_to_page_menu(temp, f):
+    var_found = False
+    menu_name = " ".join(re.findall('[A-Z][^A-Z]*', ANGULAR_MODULE_NAME))
+    for line in f:
+        if line.strip("\n") == config['page_menu_var']:
+            var_found = True
+
+        if var_found:
+            if config['page_menu_end_identifier'] in line.strip("\n"):
+                # switch back to false            
+                var_found = False
+                line = line.replace(']', f'''  {{
+    title: '{menu_name}',
+    icon: 'nb-compose',
+    link: '/pages/{MODULE_NAME}/view',
+    home: true,
+  }}
+]''')
+        temp.write(line)
+
 # change directory to Angular Pages Folder
 with cd(PAGES_DIRECTORY):
     insert_to_file('pages-routing.module.ts', add_to_page_routes)
+    insert_to_file('pages-menu.ts', add_to_page_menu)
     # create folder structure
     pathlib.Path(MODULE_DIRECTORY).mkdir(parents=True, exist_ok=True)
     pathlib.Path(MODULE_DIRECTORY + '/create').mkdir(parents=True, exist_ok=True)

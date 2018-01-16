@@ -5,7 +5,9 @@
 
     "_comment": "below value will be used to find array name of routes",
     "page_route_var": "const routes: Routes = [{",
-    
-    "_comment": "below value will be used to append new value to routes array",
-    "page_route_end_identifier": "}]"
+    "page_route_end_identifier": "}]",
+
+    "_comment": "below value will be used to append new value to sidebar menu array",
+    "page_menu_var": "export const MENU_ITEMS: NbMenuItem[] = [",
+    "page_menu_end_identifier": "];"
 }
