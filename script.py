@@ -98,6 +98,11 @@ with cd(PAGES_DIRECTORY):
             "delete_api": config["delete_api"],
             "table_columns": config["table_columns"]
         }
+
+        search_params = str([{'field': param, 'search': 'query'} for param in config["search_params"]])
+        search_params = search_params.replace("'query'", 'query')
+        data["search_params"] = search_params
+
         make_file('module-template.ts', f'{MODULE_NAME}.module.ts', data)
         make_file('module-component-template.ts', f'{MODULE_NAME}.component.ts', data)
         make_file('routing-template.ts', f'{MODULE_NAME}-routing.module.ts', data)

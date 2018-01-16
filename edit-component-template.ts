@@ -58,16 +58,7 @@ export class ${angular_module_name}EditComponent implements OnInit {
 
   onSearch(query: string = '') {
     if (query) {
-      this.source.setFilter([
-        {
-          field: 'org_Code',
-          search: query
-        },
-        {
-          field: 'org_Name',
-          search: query
-        },
-      ], false);
+      this.source.setFilter(${search_params}, false);
     } else {
       this.source = new LocalDataSource(this.localData);
     }

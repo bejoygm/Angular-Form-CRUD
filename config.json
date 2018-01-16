@@ -28,7 +28,9 @@
       "status": {
         "title": "Business Vertical Parent Name"
       }
-    }
+    },
+
+    "search_params": ["org_Code", "org_Name"]
 
 }
 
