@@ -14,23 +14,23 @@
     "module_name": "business-vertical",
     "api_url": "http://ec2-13-127-27-144.ap-south-1.compute.amazonaws.com:8080/",
     "create_api": "manageorg/getorgbyname?org_Name",
-    "get_api": "manageorg/getorgbyname?org_Name",
+    "get_api": "businessVertical?Org_Code=BBG&IsActive=A",
     "update_api": "manageorg/getorgbyname?org_Name",
-    "delete_api": "manageorg/getorgbyname?org_Name",
+    "delete_api": "businessVertical?Org_Code=BBG&BV_Code=",
 
     "table_columns": {
-      "org_Code": {
+      "BV_Code": {
         "title": "Business Vertical Code"
       },
-      "org_Name": {
+      "BV_Name": {
         "title": "Business Vertical Name"
       },
-      "status": {
+      "BVParent_Code": {
         "title": "Business Vertical Parent Name"
       }
     },
 
-    "search_params": ["org_Code", "org_Name"]
+    "search_params": ["BV_Name", "BV_Code"]
 
 }
 

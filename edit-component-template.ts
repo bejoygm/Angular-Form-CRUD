@@ -72,7 +72,7 @@ export class ${angular_module_name}EditComponent implements OnInit {
     let popupEvent = event;
     if (window.confirm('Are you sure you want to delete?')) {
       this.http.delete<any>
-        (`${api_url}${delete_api}?org_Code=${event.data.org_Code}`).subscribe(res => {
+        (`${api_url}${delete_api}`).subscribe(res => {
           this.localData.splice(popupEvent.index, 1);
           this.source = new LocalDataSource(this.localData);
           alert(res.message);

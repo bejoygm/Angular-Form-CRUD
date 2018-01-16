@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-lg-12">
     <nb-card  class="inline-form-card">
-      <nb-card-header>Organization</nb-card-header>
+      <nb-card-header>${module_display_name}</nb-card-header>
       <nb-card-body>
-        <form *ngIf="formState.currentState === 1" class="row" [formGroup]="orgForm" (ngSubmit)="createOrganization(orgForm.value)">
+        <form class="row" [formGroup]="orgForm" (ngSubmit)="create(orgForm.value)">
           <div class="col-lg-12">
             <div class="row">
               <div class="col-lg-6">
@@ -142,42 +142,6 @@
               <button [disabled]="(!orgForm.valid)" type="submit" class="btn btn-primary mb">Next</button>
           </div>
         </form>
-        <div *ngIf="formState.currentState === 2" class="row mb-20">
-          <div class="col-lg-12 mb-20">
-            <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
-            </ng2-smart-table>
-          </div>
-          <div class="col-lg-12 text-center">
-              <button (click)="mapLibrary()" type="submit" class="btn btn-primary mb">Map Library</button>
-          </div>
-        </div>
-        <div *ngIf="formState.currentState === 3" class="row mb-20">
-          <div class="col-lg-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Entity Name</th>
-                  <th>Prefix</th>
-                  <th>Start Counter</th>
-                  <th>Suffix</th>
-                  <th>No of Digits</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let parameter of userParameters">
-                  <td>{{parameter.entity_Name}}</td>
-                  <td><input [(ngModel)]="parameter.id_Prefix" /></td>
-                  <td><input maxlength="{{parameter.no_Of_Digits}}" [(ngModel)]="parameter.id_Counter" /></td>
-                  <td><input [(ngModel)]="parameter.id_Suffix" /></td>
-                  <td>{{parameter.no_Of_Digits}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-lg-12 text-center">
-              <button (click)="completeConfig()" type="submit" class="btn btn-primary mb">Finish</button>
-          </div>
-        </div>
       </nb-card-body>
     </nb-card>
   </div>

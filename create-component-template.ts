@@ -242,7 +242,7 @@ export class ${angular_module_name}CreateComponent implements OnDestroy {
 
   }
 
-  createOrganization(val) {
+  create(val) {
     if (this.isViewOrg) {
       this.formState.currentState = 2;
       this.formState.validState = 2;

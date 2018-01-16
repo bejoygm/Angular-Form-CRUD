@@ -5,6 +5,7 @@ import pathlib
 import string
 import shutil
 import re
+from urllib.parse import urlencode, parse_qs, urlsplit, urlunsplit, unquote
 
 config = json.load(open('config.json'))
 PAGES_DIRECTORY = config['app_directory'] + config["pages_directory"]
@@ -14,6 +15,23 @@ MODLUE_DISPLAY_NAME = " ".join(re.findall('[A-Z][^A-Z]*', ANGULAR_MODULE_NAME))
 MODULE_DIRECTORY = PAGES_DIRECTORY + MODULE_NAME
 SCRIPT_DIRECTORY = os.getcwd()
 
+def set_query_parameter(url):
+    """Given a URL, set or replace a query parameter and return the
+    modified URL.
+
+    >>> set_query_parameter('http://example.com?foo=bar&biz=baz', 'foo', 'stuff')
+    'http://example.com?foo=stuff&biz=baz'
+
+    """
+    scheme, netloc, path, query_string, fragment = urlsplit(url)
+    query_params = parse_qs(query_string, keep_blank_values=True)
+
+    for param_name in query_params:
+        if query_params[param_name][0] == '':
+            query_params[param_name] = '${event.data.' + param_name + '}'
+    new_query_string = urlencode(query_params, doseq=True)
+
+    return unquote(urlunsplit((scheme, netloc, path, new_query_string, fragment)))
 
 class cd:
     """Context manager for changing the current working directory"""
@@ -30,7 +48,7 @@ class cd:
 def make_file(template_file, output_file_name, data):
     filein = open(SCRIPT_DIRECTORY + '/' + template_file)
     src = string.Template(filein.read())
-    with open(output_file_name, 'w+') as output:
+    with open(output_file_name, 'w') as output:
         output.write(src.safe_substitute(data))
     filein.close()
 
@@ -99,9 +117,12 @@ with cd(PAGES_DIRECTORY):
             "table_columns": config["table_columns"]
         }
 
+
         search_params = str([{'field': param, 'search': 'query'} for param in config["search_params"]])
         search_params = search_params.replace("'query'", 'query')
         data["search_params"] = search_params
+
+        data['delete_api'] = set_query_parameter(config['delete_api'])
 
         make_file('module-template.ts', f'{MODULE_NAME}.module.ts', data)
         make_file('module-component-template.ts', f'{MODULE_NAME}.component.ts', data)
